@@ -13,9 +13,6 @@ export function SiteFooter() {
             className="h-16 md:h-20 w-auto object-contain"
             loading="lazy"
           />
-          <p className="text-xs tracking-[0.28em] uppercase text-background/60 mt-3">
-            Personal Real Estate Corporation
-          </p>
           <p className="mt-6 text-sm text-background/70 leading-relaxed">
             A Vancouver Realtor with over a decade of experience guiding families,
             professionals, and investors through one of life's biggest milestones —
