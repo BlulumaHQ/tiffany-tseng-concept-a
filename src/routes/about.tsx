@@ -2,8 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Heart, Sparkles, Target } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CTASection } from "@/components/CTASection";
-import interior1 from "@/assets/interior-1.jpg";
 import { siteAssets } from "@/data/siteAssets";
+import { listings } from "@/data/listings";
+
+const interior1 = listings[1].image;
 
 export const Route = createFileRoute("/about")({
   head: () => ({
