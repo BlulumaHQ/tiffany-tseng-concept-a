@@ -26,10 +26,10 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-primary text-primary-foreground ${
         scrolled || open
-          ? "bg-primary/95 text-primary-foreground backdrop-blur-md border-b border-primary-foreground/10 shadow-[0_1px_24px_rgba(0,0,0,0.08)]"
-          : "bg-primary/88 text-primary-foreground backdrop-blur-sm"
+          ? "border-b border-primary-foreground/10 shadow-[0_1px_24px_rgba(0,0,0,0.08)]"
+          : ""
       }`}
     >
       {/* TOP BAR */}
