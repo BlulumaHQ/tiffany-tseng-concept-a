@@ -5,7 +5,6 @@ import { ListingCard } from "@/components/ListingCard";
 import { CTASection } from "@/components/CTASection";
 import { listings } from "@/data/listings";
 import heroHome from "@/assets/hero-home.jpg";
-import vancouverAerial from "@/assets/vancouver-aerial.jpg";
 import { siteAssets } from "@/data/siteAssets";
 
 export const Route = createFileRoute("/")({
