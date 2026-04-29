@@ -6,6 +6,7 @@ import listing5 from "@/assets/listings/listing-5.jpg";
 import listing6 from "@/assets/listings/listing-6.jpg";
 import listing7 from "@/assets/listings/listing-7.jpg";
 import listing8 from "@/assets/listings/listing-8.jpg";
+import listing9 from "@/assets/listings/listing-9.jpg";
 
 export type Listing = {
   id: string;
@@ -92,6 +93,16 @@ export const listings: Listing[] = [
     image: listing8,
     sourceUrl: "http://s3.amazonaws.com/mrp-listings/3/3/8/108591833/b66b028910466d7b2b397de5a3c8baa3.jpeg",
     href: "https://tiffanytseng.com/recip.html/listing.r3116101-544-garfield-street-new-westminster-v3l-4a7.108591833",
+    isNew: true,
+  },
+  {
+    id: "9",
+    address: "15 - 5771 Irmin Street, Burnaby",
+    area: "Metrotown",
+    price: "$999,000",
+    image: listing9,
+    sourceUrl: "https://tiffanytseng.com/wps/rest/63404/l/108591866/image/first",
+    href: "https://tiffanytseng.com/recip.html/listing.r3116055-15-5771-irmin-street-burnaby-v5j-0c5.108591866",
     isNew: true,
   },
 ];

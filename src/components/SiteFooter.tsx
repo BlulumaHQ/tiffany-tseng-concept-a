@@ -10,7 +10,7 @@ export function SiteFooter() {
           <img
             src={siteAssets.brandLogoLight}
             alt="Tiffany Tseng Personal Real Estate Corporation"
-            className="h-14 w-auto object-contain"
+            className="h-24 md:h-28 w-auto object-contain"
             loading="lazy"
           />
           <p className="text-xs tracking-[0.28em] uppercase text-background/60 mt-3">

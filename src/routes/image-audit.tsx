@@ -32,6 +32,7 @@ function buildRows(): ImageRow[] {
   const assetMeta: Record<keyof typeof siteAssets, string> = {
     brandLogo: "Header — signature logo",
     brandLogoLight: "Footer — white wordmark",
+    brandLogoSource: "Original brand logo from source CDN",
     remaxLogo: "Footer — RE/MAX City Realty",
     mlsReciprocity: "Footer — MLS reciprocity",
     tiffanyPortrait: "About — professional portrait",
