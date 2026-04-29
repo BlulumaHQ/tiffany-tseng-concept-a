@@ -7,8 +7,13 @@ export function SiteFooter() {
     <footer className="bg-ink text-background">
       <div className="container-tight py-20 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2 max-w-md">
-          <p className="font-display text-2xl leading-tight">Tiffany Tseng</p>
-          <p className="text-xs tracking-[0.28em] uppercase text-background/60 mt-2">
+          <img
+            src={siteAssets.brandLogoLight}
+            alt="Tiffany Tseng Personal Real Estate Corporation"
+            className="h-14 w-auto object-contain"
+            loading="lazy"
+          />
+          <p className="text-xs tracking-[0.28em] uppercase text-background/60 mt-3">
             Personal Real Estate Corporation
           </p>
           <p className="mt-6 text-sm text-background/70 leading-relaxed">
