@@ -26,12 +26,14 @@ export const siteAssetSourceUrls = {
     "user-uploads://ChatGPT_Image_Apr_28_2026_07_00_30_PM.png",
   brandLogoLight:
     "user-uploads://ChatGPT_Image_Apr_28_2026_07_00_30_PM.png",
+  brandLogoSource:
+    "https://iss-cdn.myrealpage.com/zGWUF_iVBWPLvMjjHJup81zPuzwshl-jUQJphlkx5Io/rs:auto:0:0:0/g:sm/bG9jYWw6Ly8vZGF0YS9hcHAvd3BzL3QvaS9mL2YvdGlmZmFueS10c2VuZy5teXJlYWxwYWdld2Vic2l0ZS5jb20vX21lZGlhL3F1aWNrLXVwbG9hZHMvU2NyZWVuMjBTaG90MjAyMDI1LTA1LTIzMjBhdDIwNC41MC4xNjIwUE0tY3JvcHBlZC0xNzQ4MDQ1MDU1Nzk5LnBuZz90PTE3NDgwNDUwNTg1MDk?t=1748045058509",
   remaxLogo:
     "https://iss-cdn.myrealpage.com/NwuOCkQYEWMrBukK32_QNTXdcXl2CACKtQvFNZRq764/rs:auto:0:0:0/g:sm/bG9jYWw6Ly8vZGF0YS9hcHAvd3BzL3QvaS9mL2YvdGlmZmFueS10c2VuZy5teXJlYWxwYWdld2Vic2l0ZS5jb20vX21lZGlhL3F1aWNrLXVwbG9hZHMvUkVNQVggQ2l0eSB3aGl0ZSB0cmFucy5wbmc_dD0xNjk2NjQ4MzY0NTUw?t=1696648364550",
   mlsReciprocity:
     "https://tiffanytseng.com/wps/img/regional/icon-gv-recip-standard.gif",
   tiffanyPortrait:
-    "https://iss-cdn.myrealpage.com/_Cq4Ll64ThSRckB0Ua752ntZCUihHSXXFR9p0moR7kk/rs:auto:0:0:0/g:sm/bG9jYWw6Ly9maWxlOi8vL2RhdGEvYXBwL21hcmtldGluZy80LzAvNC82MzQwNC9wdWJsaWMvXzE3NTY4NTgzMDc3NTUuaW1hZ2U?m.origin=twh044X5KJ1VmhRy",
+    "https://tiffanytseng.com/_media/quick-uploads/Tiffany%20Tseng.jpg",
   tiffanyAward:
     "https://iss-cdn.myrealpage.com/jGYcFaGvDiPqvWohfWMomU6VqhMmNsJOttevRbWtLfc/rs:auto:0:0:0/g:sm/bG9jYWw6Ly8vZGF0YS9hcHAvd3BzL3QvaS9mL2YvdGlmZmFueS10c2VuZy5teXJlYWxwYWdld2Vic2l0ZS5jb20vX21lZGlhL3F1aWNrLXVwbG9hZHMvUGxhdGludW1fMTczNDEuanBnP3Q9MTc1Njg1ODUyMDYxMw?t=1756858520613",
   vancouverHero:
