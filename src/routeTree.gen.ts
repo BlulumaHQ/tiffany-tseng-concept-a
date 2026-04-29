@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SellingRouteImport } from './routes/selling'
 import { Route as ListingsRouteImport } from './routes/listings'
+import { Route as ImageAuditRouteImport } from './routes/image-audit'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommunitiesRouteImport } from './routes/communities'
 import { Route as BuyingRouteImport } from './routes/buying'
@@ -25,6 +26,11 @@ const SellingRoute = SellingRouteImport.update({
 const ListingsRoute = ListingsRouteImport.update({
   id: '/listings',
   path: '/listings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImageAuditRoute = ImageAuditRouteImport.update({
+  id: '/image-audit',
+  path: '/image-audit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/buying': typeof BuyingRoute
   '/communities': typeof CommunitiesRoute
   '/contact': typeof ContactRoute
+  '/image-audit': typeof ImageAuditRoute
   '/listings': typeof ListingsRoute
   '/selling': typeof SellingRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/buying': typeof BuyingRoute
   '/communities': typeof CommunitiesRoute
   '/contact': typeof ContactRoute
+  '/image-audit': typeof ImageAuditRoute
   '/listings': typeof ListingsRoute
   '/selling': typeof SellingRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/buying': typeof BuyingRoute
   '/communities': typeof CommunitiesRoute
   '/contact': typeof ContactRoute
+  '/image-audit': typeof ImageAuditRoute
   '/listings': typeof ListingsRoute
   '/selling': typeof SellingRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/buying'
     | '/communities'
     | '/contact'
+    | '/image-audit'
     | '/listings'
     | '/selling'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/buying'
     | '/communities'
     | '/contact'
+    | '/image-audit'
     | '/listings'
     | '/selling'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/buying'
     | '/communities'
     | '/contact'
+    | '/image-audit'
     | '/listings'
     | '/selling'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   BuyingRoute: typeof BuyingRoute
   CommunitiesRoute: typeof CommunitiesRoute
   ContactRoute: typeof ContactRoute
+  ImageAuditRoute: typeof ImageAuditRoute
   ListingsRoute: typeof ListingsRoute
   SellingRoute: typeof SellingRoute
 }
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/listings'
       fullPath: '/listings'
       preLoaderRoute: typeof ListingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-audit': {
+      id: '/image-audit'
+      path: '/image-audit'
+      fullPath: '/image-audit'
+      preLoaderRoute: typeof ImageAuditRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuyingRoute: BuyingRoute,
   CommunitiesRoute: CommunitiesRoute,
   ContactRoute: ContactRoute,
+  ImageAuditRoute: ImageAuditRoute,
   ListingsRoute: ListingsRoute,
   SellingRoute: SellingRoute,
 }
