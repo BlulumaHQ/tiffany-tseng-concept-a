@@ -69,7 +69,7 @@ export function SiteHeader() {
           <img
             src={siteAssets.brandLogo}
             alt="Tiffany Tseng Personal Real Estate Corporation"
-            className="h-10 lg:h-12 w-auto object-contain"
+            className="h-14 lg:h-20 w-auto object-contain drop-shadow-sm"
             loading="eager"
           />
         </Link>

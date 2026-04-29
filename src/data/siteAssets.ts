@@ -1,7 +1,8 @@
 import brandLogo from "@/assets/tiffany-logo.png";
+import brandLogoSource from "@/assets/site/brand-logo.png";
 import remaxLogo from "@/assets/site/remax-logo.png";
 import mlsReciprocity from "@/assets/site/mls-reciprocity.gif";
-import tiffanyPortrait from "@/assets/site/tiffany-portrait.png";
+import tiffanyPortrait from "@/assets/site/tiffany-portrait.jpg";
 import tiffanyAward from "@/assets/site/tiffany-award.jpg";
 import vancouverHero from "@/assets/site/vancouver-hero.jpg";
 import medallion from "@/assets/site/medallion.png";
@@ -10,6 +11,7 @@ import suttonMasters from "@/assets/site/sutton-masters.png";
 export const siteAssets = {
   brandLogo,
   brandLogoLight: brandLogo,
+  brandLogoSource,
   remaxLogo,
   mlsReciprocity,
   tiffanyPortrait,
