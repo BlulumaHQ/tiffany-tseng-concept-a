@@ -2,7 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Camera, Megaphone, LineChart, Home } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CTASection } from "@/components/CTASection";
-import heroHome from "@/assets/hero-home.jpg";
+import { listings } from "@/data/listings";
+
+const heroHome = listings[7].image;
 
 export const Route = createFileRoute("/selling")({
   head: () => ({

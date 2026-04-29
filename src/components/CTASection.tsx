@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import vancouverAerial from "@/assets/vancouver-aerial.jpg";
+import { listings } from "@/data/listings";
+
+const vancouverAerial = listings[5].image;
 
 export function CTASection() {
   return (

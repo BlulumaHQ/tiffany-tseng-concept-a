@@ -4,9 +4,10 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { ListingCard } from "@/components/ListingCard";
 import { CTASection } from "@/components/CTASection";
 import { listings } from "@/data/listings";
-import heroHome from "@/assets/hero-home.jpg";
-import tiffanyPortrait from "@/assets/tiffany-portrait.jpg";
-import vancouverAerial from "@/assets/vancouver-aerial.jpg";
+import { siteAssets } from "@/data/siteAssets";
+
+// Use a real listing photo for the hero — no AI generated imagery.
+const heroHome = listings[0].image;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -158,7 +159,7 @@ function HomePage() {
         <div className="container-tight grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="img-zoom aspect-[4/5] bg-muted">
             <img
-              src={tiffanyPortrait}
+              src={siteAssets.tiffanyPortrait}
               alt="Tiffany Tseng, Vancouver Realtor"
               loading="lazy"
               className="w-full h-full object-cover"

@@ -2,8 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Heart, Sparkles, Target } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CTASection } from "@/components/CTASection";
-import tiffanyPortrait from "@/assets/tiffany-portrait.jpg";
-import interior1 from "@/assets/interior-1.jpg";
+import { siteAssets } from "@/data/siteAssets";
+import { listings } from "@/data/listings";
+
+const interior1 = listings[1].image;
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -35,7 +37,12 @@ function AboutPage() {
       <section className="py-24 md:py-32">
         <div className="container-tight grid lg:grid-cols-5 gap-16 items-start">
           <div className="lg:col-span-2 img-zoom aspect-[4/5] bg-muted lg:sticky lg:top-28">
-            <img src={tiffanyPortrait} alt="Tiffany Tseng" loading="lazy" className="w-full h-full object-cover" />
+            <img
+              src={siteAssets.tiffanyPortrait}
+              alt="Tiffany Tseng, Personal Real Estate Corporation"
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="lg:col-span-3 space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="eyebrow">Tiffany Tseng PREC</p>
@@ -82,6 +89,20 @@ function AboutPage() {
           <h2 className="mt-4 text-center font-display text-4xl md:text-5xl max-w-2xl mx-auto leading-tight">
             A thoughtful approach to every client.
           </h2>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-90">
+            <img
+              src={siteAssets.medallion}
+              alt="Medallion Club Member"
+              className="h-20 md:h-24 w-auto object-contain"
+              loading="lazy"
+            />
+            <img
+              src={siteAssets.suttonMasters}
+              alt="Sutton Masters Award 2022"
+              className="h-20 md:h-24 w-auto object-contain"
+              loading="lazy"
+            />
+          </div>
           <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: Heart, title: "Warmth & Care", desc: "Every client is treated like family. Clear, kind communication at every step." },
