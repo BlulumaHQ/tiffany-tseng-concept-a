@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Heart, Sparkles, Target } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CTASection } from "@/components/CTASection";
-import tiffanyPortrait from "@/assets/tiffany-portrait.jpg";
 import interior1 from "@/assets/interior-1.jpg";
+import { siteAssets } from "@/data/siteAssets";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -35,7 +35,12 @@ function AboutPage() {
       <section className="py-24 md:py-32">
         <div className="container-tight grid lg:grid-cols-5 gap-16 items-start">
           <div className="lg:col-span-2 img-zoom aspect-[4/5] bg-muted lg:sticky lg:top-28">
-            <img src={tiffanyPortrait} alt="Tiffany Tseng" loading="lazy" className="w-full h-full object-cover" />
+            <img
+              src={siteAssets.tiffanyPortrait}
+              alt="Tiffany Tseng, Personal Real Estate Corporation"
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="lg:col-span-3 space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="eyebrow">Tiffany Tseng PREC</p>
