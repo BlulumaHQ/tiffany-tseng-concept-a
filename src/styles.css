@@ -40,13 +40,13 @@
   /* Soft white background, deep teal-blue brand color, light blue accent */
   --background: oklch(0.99 0.004 230);
   --foreground: oklch(0.32 0.05 235);   /* deep teal-blue text */
-  --ink: oklch(0.42 0.07 235);          /* mid teal-blue (was near-black) */
+  --ink: oklch(0.40 0.055 230);         /* matches logo background #0E4F6D */
   --cream: oklch(0.965 0.012 230);      /* very pale blue surface */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.28 0.05 235);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.28 0.05 235);
-  --primary: oklch(0.42 0.08 235);      /* brand teal-blue */
+  --primary: oklch(0.40 0.055 230);     /* matches logo background #0E4F6D */
   --primary-foreground: oklch(0.99 0.004 230);
   --secondary: oklch(0.94 0.02 230);
   --secondary-foreground: oklch(0.32 0.05 235);
