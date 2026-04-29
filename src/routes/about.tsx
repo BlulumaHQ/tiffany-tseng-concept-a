@@ -87,6 +87,20 @@ function AboutPage() {
           <h2 className="mt-4 text-center font-display text-4xl md:text-5xl max-w-2xl mx-auto leading-tight">
             A thoughtful approach to every client.
           </h2>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-90">
+            <img
+              src={siteAssets.medallion}
+              alt="Medallion Club Member"
+              className="h-20 md:h-24 w-auto object-contain"
+              loading="lazy"
+            />
+            <img
+              src={siteAssets.suttonMasters}
+              alt="Sutton Masters Award 2022"
+              className="h-20 md:h-24 w-auto object-contain"
+              loading="lazy"
+            />
+          </div>
           <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: Heart, title: "Warmth & Care", desc: "Every client is treated like family. Clear, kind communication at every step." },
