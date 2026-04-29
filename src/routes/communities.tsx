@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CTASection } from "@/components/CTASection";
-import vancouverAerial from "@/assets/vancouver-aerial.jpg";
+import { listings } from "@/data/listings";
+
+const vancouverAerial = listings[0].image;
 
 export const Route = createFileRoute("/communities")({
   head: () => ({
