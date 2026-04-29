@@ -4,8 +4,10 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { ListingCard } from "@/components/ListingCard";
 import { CTASection } from "@/components/CTASection";
 import { listings } from "@/data/listings";
-import heroHome from "@/assets/hero-home.jpg";
 import { siteAssets } from "@/data/siteAssets";
+
+// Use a real listing photo for the hero — no AI generated imagery.
+const heroHome = listings[0].image;
 
 export const Route = createFileRoute("/")({
   head: () => ({
