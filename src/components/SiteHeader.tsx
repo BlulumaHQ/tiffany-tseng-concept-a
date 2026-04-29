@@ -64,12 +64,12 @@ export function SiteHeader() {
       </div>
 
       {/* MAIN NAV */}
-      <div className="container-tight flex items-center justify-between h-16 lg:h-20">
-        <Link to="/" className="flex items-center gap-3 group -my-3">
+      <div className="container-tight flex items-center justify-between h-20 lg:h-24">
+        <Link to="/" className="flex items-center gap-3 group">
           <img
             src={siteAssets.brandLogo}
             alt="Tiffany Tseng Personal Real Estate Corporation"
-            className="h-20 lg:h-28 w-auto object-contain drop-shadow-sm"
+            className="h-16 lg:h-20 w-auto object-contain"
             loading="eager"
           />
         </Link>
