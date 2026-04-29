@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, Instagram } from "lucide-react";
+import { siteAssets } from "@/data/siteAssets";
 
 export function SiteFooter() {
   return (
@@ -57,9 +58,26 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-background/10">
-        <div className="container-tight py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-background/50">
-          <p>© {new Date().getFullYear()} Tiffany Tseng Personal Real Estate Corporation. All rights reserved.</p>
-          <p>RE/MAX City Realty</p>
+        <div className="container-tight py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <img
+              src={siteAssets.remaxLogo}
+              alt="RE/MAX City Realty"
+              className="h-12 w-auto object-contain"
+              loading="lazy"
+            />
+            <img
+              src={siteAssets.mlsReciprocity}
+              alt="MLS Reciprocity"
+              className="h-10 w-auto object-contain bg-background/5 p-1 rounded-sm"
+              loading="lazy"
+            />
+          </div>
+          <p className="text-xs text-background/50 text-center md:text-right max-w-md leading-relaxed">
+            © {new Date().getFullYear()} Tiffany Tseng Personal Real Estate Corporation.
+            The data relating to real estate on this website comes in part from the
+            MLS® Reciprocity program of the Real Estate Board of Greater Vancouver.
+          </p>
         </div>
       </div>
     </footer>
