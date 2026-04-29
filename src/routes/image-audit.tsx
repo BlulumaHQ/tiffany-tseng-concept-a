@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { listings } from "@/data/listings";
-import { siteAssets } from "@/data/siteAssets";
+import { siteAssets, siteAssetSourceUrls } from "@/data/siteAssets";
 
 export const Route = createFileRoute("/image-audit")({
   head: () => ({
@@ -18,7 +18,8 @@ export const Route = createFileRoute("/image-audit")({
 type ImageRow = {
   group: string;
   label: string;
-  url: string;
+  previewUrl: string;
+  sourceUrl: string;
   usedOn: string;
 };
 
@@ -43,7 +44,8 @@ function buildRows(): ImageRow[] {
     rows.push({
       group: "Brand & Site",
       label: key,
-      url: siteAssets[key],
+      previewUrl: siteAssets[key],
+      sourceUrl: siteAssetSourceUrls[key],
       usedOn: assetMeta[key],
     });
   });
@@ -53,7 +55,8 @@ function buildRows(): ImageRow[] {
     rows.push({
       group: "Listings",
       label: l.address,
-      url: l.image,
+      previewUrl: l.image,
+      sourceUrl: l.sourceUrl,
       usedOn: `${l.area} — ${l.price}`,
     });
   });
@@ -85,7 +88,7 @@ function ImageAuditPage() {
             return next;
           });
       };
-      img.src = row.url;
+      img.src = row.previewUrl;
     });
     return () => {
       cancelled = true;
@@ -146,11 +149,11 @@ function ImageAuditPage() {
                 {rows.map((row, i) => {
                   const status = statuses[i];
                   return (
-                    <tr key={row.url + i} className="border-t border-border align-top">
+                    <tr key={row.sourceUrl + i} className="border-t border-border align-top">
                       <td className="p-3">
-                        <a href={row.url} target="_blank" rel="noreferrer">
+                        <a href={row.sourceUrl} target="_blank" rel="noreferrer">
                           <img
-                            src={row.url}
+                            src={row.previewUrl}
                             alt={row.label}
                             className="w-24 h-16 object-cover rounded bg-muted"
                             loading="lazy"
@@ -179,12 +182,12 @@ function ImageAuditPage() {
                       </td>
                       <td className="p-3 max-w-md">
                         <a
-                          href={row.url}
+                          href={row.sourceUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="text-accent break-all underline-offset-4 hover:underline"
                         >
-                          {row.url}
+                          {row.sourceUrl}
                         </a>
                       </td>
                     </tr>
