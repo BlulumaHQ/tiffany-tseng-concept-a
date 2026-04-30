@@ -1,13 +1,43 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Home, Key, MapPin, Sparkles, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ListingCard } from "@/components/ListingCard";
 import { CTASection } from "@/components/CTASection";
 import { listings } from "@/data/listings";
 import { siteAssets } from "@/data/siteAssets";
 
-// Use a real listing photo for the hero — no AI generated imagery.
-const heroHome = listings[0].image;
+// Hero slideshow — three real listing photos. No AI-generated imagery.
+// Slide 1 keeps the original brand intro. Slides 2 & 3 highlight specific listings.
+const heroSlides = [
+  {
+    image: listings[0].image, // 5110 Mckee Street — character home exterior
+    eyebrow: "Vancouver · Burnaby · Surrey",
+    title: "Your dream home, found with care.",
+    body:
+      "Tiffany Tseng PREC — a decade of guiding families, professionals, and investors through Vancouver's most important real estate decisions.",
+    primaryCta: { label: "Book a Consultation", to: "/contact" as const },
+    secondaryCta: { label: "View Listings", to: "/listings" as const },
+  },
+  {
+    image: listings[7].image, // 544 Garfield Street, New Westminster — single house at dusk
+    eyebrow: "New Listing · The Heights, New Westminster",
+    title: "A timeless single-family home, framed by twilight.",
+    body:
+      "544 Garfield Street — a beautifully kept rancher on a sun-drenched lot in one of New West's most loved neighbourhoods. $1,395,000.",
+    primaryCta: { label: "View This Listing", to: "/listings" as const },
+    secondaryCta: { label: "Book a Private Tour", to: "/contact" as const },
+  },
+  {
+    image: listings[1].image, // 26 - 6088 Beresford — bright interior
+    eyebrow: "Featured · Metrotown, Burnaby",
+    title: "Move-in ready living in the heart of Metrotown.",
+    body:
+      "26 - 6088 Beresford Street — light-filled interiors, modern finishes, and steps from SkyTrain, shops, and parks. $1,155,000.",
+    primaryCta: { label: "Explore the Home", to: "/listings" as const },
+    secondaryCta: { label: "Request Details", to: "/contact" as const },
+  },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,44 +52,94 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveSlide((i) => (i + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative min-h-[100svh] flex items-center">
+      <section className="relative min-h-[100svh] flex items-center overflow-hidden">
+        {/* Slideshow images (cross-fade) */}
         <div className="absolute inset-0">
-          <img
-            src={heroHome}
-            alt="Luxury Vancouver home at dusk"
-            className="w-full h-full object-cover"
-          />
+          {heroSlides.map((slide, i) => (
+            <div
+              key={i}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
+                i === activeSlide ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={i !== activeSlide}
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+            </div>
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/40 to-ink/85" />
         </div>
-        <div className="relative container-tight pt-32 pb-20 text-background">
-          <p className="eyebrow text-accent">Vancouver · Burnaby · Surrey</p>
-          <h1 className="mt-6 font-display text-5xl md:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl">
-            Your dream home, found with care.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-background/80 leading-relaxed">
-            Tiffany Tseng PREC — a decade of guiding families, professionals, and investors
-            through Vancouver's most important real estate decisions.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-8 h-13 py-4 text-xs tracking-[0.22em] uppercase font-medium bg-accent text-accent-foreground hover:bg-background hover:text-foreground transition-colors"
-            >
-              Book a Consultation <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/listings"
-              className="inline-flex items-center justify-center px-8 h-13 py-4 text-xs tracking-[0.22em] uppercase font-medium border border-background/40 text-background hover:bg-background hover:text-foreground transition-colors"
-            >
-              View Listings
-            </Link>
+
+        {/* Slideshow text (cross-fade) */}
+        <div className="relative container-tight pt-32 pb-20 text-background w-full">
+          <div className="relative">
+            {heroSlides.map((slide, i) => (
+              <div
+                key={i}
+                className={`transition-opacity duration-700 ease-out ${
+                  i === activeSlide
+                    ? "opacity-100 relative"
+                    : "opacity-0 absolute inset-0 pointer-events-none"
+                }`}
+                aria-hidden={i !== activeSlide}
+              >
+                <p className="eyebrow text-accent">{slide.eyebrow}</p>
+                <h1 className="mt-6 font-display text-5xl md:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl">
+                  {slide.title}
+                </h1>
+                <p className="mt-6 max-w-xl text-lg text-background/80 leading-relaxed">
+                  {slide.body}
+                </p>
+                <div className="mt-10 flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to={slide.primaryCta.to}
+                    className="inline-flex items-center justify-center gap-2 px-8 h-13 py-4 text-xs tracking-[0.22em] uppercase font-medium bg-accent text-accent-foreground hover:bg-background hover:text-foreground transition-colors"
+                  >
+                    {slide.primaryCta.label} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to={slide.secondaryCta.to}
+                    className="inline-flex items-center justify-center px-8 h-13 py-4 text-xs tracking-[0.22em] uppercase font-medium border border-background/40 text-background hover:bg-background hover:text-foreground transition-colors"
+                  >
+                    {slide.secondaryCta.label}
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-background/60 text-[10px] tracking-[0.3em] uppercase">
-          Scroll
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-10">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setActiveSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-[2px] transition-all duration-500 ${
+                i === activeSlide
+                  ? "w-12 bg-accent"
+                  : "w-6 bg-background/50 hover:bg-background/80"
+              }`}
+            />
+          ))}
         </div>
       </section>
 
