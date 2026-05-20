@@ -14,12 +14,7 @@ const redirectsTargetPath = resolve(distDir, "_redirects");
 const prerenderUrl = "http://127.0.0.1:4910/";
 
 async function exists(path) {
-  try {
-    await stat(path);
-    return true;
-  } catch {
-    return false;
-  }
+  try { await stat(path); return true; } catch { return false; }
 }
 
 async function waitForPreview(url, attempts = 150, delayMs = 200) {
@@ -29,31 +24,24 @@ async function waitForPreview(url, attempts = 150, delayMs = 200) {
       const response = await fetch(url);
       const text = await response.text();
       if (response.ok && text.includes("<html")) {
-        return { response, text };
+        return { text };
       }
-      lastError = new Error(
-        `Preview returned ${response.status} (attempt ${attempt + 1})`
-      );
+      lastError = new Error(`Preview returned ${response.status}`);
     } catch (err) {
       lastError = err;
     }
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, delayMs));
+    await new Promise((r) => setTimeout(r, delayMs));
   }
-  throw new Error(
-    `Timed out waiting for preview server at ${url}. Last error: ${lastError?.message}`
-  );
+  throw new Error(`Timed out waiting for ${url}. Last: ${lastError?.message}`);
 }
 
 async function stopPreviewServer(child) {
   if (!child || child.exitCode !== null) return;
-
   child.kill("SIGTERM");
-  const settled = Promise.race([
+  await Promise.race([
     once(child, "exit"),
-    new Promise((resolveTimeout) => setTimeout(resolveTimeout, 3_000)),
+    new Promise((r) => setTimeout(r, 3000)),
   ]);
-  await settled;
-
   if (child.exitCode === null) {
     child.kill("SIGKILL");
     await once(child, "exit");
@@ -61,33 +49,23 @@ async function stopPreviewServer(child) {
 }
 
 async function moveClientOutputToRoot() {
-  const clientEntries = await readdir(clientDir);
-
-  await Promise.all(
-    clientEntries.map(async (entry) => {
-      const sourcePath = resolve(clientDir, entry);
-      const destinationPath = resolve(distDir, entry);
-      await rm(destinationPath, { recursive: true, force: true });
-      await rename(sourcePath, destinationPath);
-    }),
-  );
-
+  const entries = await readdir(clientDir);
+  for (const entry of entries) {
+    const src = resolve(clientDir, entry);
+    const dest = resolve(distDir, entry);
+    await rm(dest, { recursive: true, force: true });
+    await rename(src, dest);
+  }
   await rm(clientDir, { recursive: true, force: true });
 }
 
-async function ensureBuildOutputsExist() {
-  if (!(await exists(clientDir)) || !(await exists(serverDir))) {
-    throw new Error("Expected vite build output in dist/client and dist/server before running static-build.");
-  }
-
-  if (!(await exists(serverIndexPath))) {
-    throw new Error("Expected dist/server/index.js to exist before running static-build.");
-  }
-}
-
 async function main() {
-  await ensureBuildOutputsExist();
-
+  if (!(await exists(clientDir)) || !(await exists(serverDir))) {
+    throw new Error("Expected dist/client and dist/server after vite build");
+  }
+  if (!(await exists(serverIndexPath))) {
+    throw new Error("Expected dist/server/index.js to exist");
+  }
   if (!(await exists(serverAliasPath))) {
     await copyFile(serverIndexPath, serverAliasPath);
   }
@@ -95,10 +73,7 @@ async function main() {
   const previewProcess = spawn(
     process.platform === "win32" ? "npx.cmd" : "npx",
     ["vite", "preview", "--host", "127.0.0.1", "--port", "4910", "--strictPort"],
-    {
-      cwd: rootDir,
-      stdio: "inherit",
-    },
+    { cwd: rootDir, stdio: "inherit" }
   );
 
   await new Promise((r) => setTimeout(r, 2000));
@@ -106,7 +81,6 @@ async function main() {
   try {
     const { text: html } = await waitForPreview(prerenderUrl);
     await writeFile(resolve(clientDir, "index.html"), html, "utf8");
-
     await moveClientOutputToRoot();
     await rm(serverDir, { recursive: true, force: true });
 
@@ -117,15 +91,11 @@ async function main() {
   } finally {
     await stopPreviewServer(previewProcess);
   }
-
-  if (!(await exists(redirectsTargetPath)) && (await exists(redirectsSourcePath))) {
-    const redirects = await readFile(redirectsSourcePath, "utf8");
-    await writeFile(redirectsTargetPath, redirects, "utf8");
-  }
 }
 
 try {
   await main();
+  console.log("[static-build] Success");
   process.exit(0);
 } catch (err) {
   console.error("[static-build] Failed:", err);
