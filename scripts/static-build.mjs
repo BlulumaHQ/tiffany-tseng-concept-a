@@ -40,7 +40,7 @@ async function waitForPreview(url, attempts = 50, delayMs = 200) {
 }
 
 async function stopPreviewServer(child) {
-  if (!child || child.killed) return;
+  if (!child || child.exitCode !== null) return;
 
   child.kill("SIGTERM");
   const settled = Promise.race([
@@ -49,7 +49,7 @@ async function stopPreviewServer(child) {
   ]);
   await settled;
 
-  if (child.exitCode === null && !child.killed) {
+  if (child.exitCode === null) {
     child.kill("SIGKILL");
     await once(child, "exit");
   }
