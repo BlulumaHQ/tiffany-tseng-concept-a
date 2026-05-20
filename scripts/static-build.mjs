@@ -59,6 +59,13 @@ async function moveClientOutputToRoot() {
   await rm(clientDir, { recursive: true, force: true });
 }
 
+async function ensureRedirects() {
+  if (!(await exists(redirectsTargetPath)) && (await exists(redirectsSourcePath))) {
+    await mkdir(distDir, { recursive: true });
+    await copyFile(redirectsSourcePath, redirectsTargetPath);
+  }
+}
+
 async function main() {
   if (!(await exists(clientDir)) || !(await exists(serverDir))) {
     throw new Error("Expected dist/client and dist/server after vite build");
@@ -83,14 +90,12 @@ async function main() {
     await writeFile(resolve(clientDir, "index.html"), html, "utf8");
     await moveClientOutputToRoot();
     await rm(serverDir, { recursive: true, force: true });
-
-    if (!(await exists(redirectsTargetPath)) && (await exists(redirectsSourcePath))) {
-      await mkdir(distDir, { recursive: true });
-      await copyFile(redirectsSourcePath, redirectsTargetPath);
-    }
+    await ensureRedirects();
   } finally {
     await stopPreviewServer(previewProcess);
   }
+
+  await ensureRedirects();
 }
 
 try {
