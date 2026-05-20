@@ -22,21 +22,26 @@ async function exists(path) {
   }
 }
 
-async function waitForPreview(url, attempts = 50, delayMs = 200) {
+async function waitForPreview(url, attempts = 150, delayMs = 200) {
+  let lastError;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     try {
       const response = await fetch(url);
-      if (response.ok) {
-        return response;
+      const text = await response.text();
+      if (response.ok && text.includes("<html")) {
+        return { response, text };
       }
-    } catch {
-      // preview server not ready yet
+      lastError = new Error(
+        `Preview returned ${response.status} (attempt ${attempt + 1})`
+      );
+    } catch (err) {
+      lastError = err;
     }
-
     await new Promise((resolveDelay) => setTimeout(resolveDelay, delayMs));
   }
-
-  throw new Error(`Timed out waiting for preview server at ${url}`);
+  throw new Error(
+    `Timed out waiting for preview server at ${url}. Last error: ${lastError?.message}`
+  );
 }
 
 async function stopPreviewServer(child) {
@@ -96,9 +101,10 @@ async function main() {
     },
   );
 
+  await new Promise((r) => setTimeout(r, 2000));
+
   try {
-    const response = await waitForPreview(prerenderUrl);
-    const html = await response.text();
+    const { text: html } = await waitForPreview(prerenderUrl);
     await writeFile(resolve(clientDir, "index.html"), html, "utf8");
 
     await moveClientOutputToRoot();
@@ -118,4 +124,10 @@ async function main() {
   }
 }
 
-await main();
+try {
+  await main();
+  process.exit(0);
+} catch (err) {
+  console.error("[static-build] Failed:", err);
+  process.exit(1);
+}
