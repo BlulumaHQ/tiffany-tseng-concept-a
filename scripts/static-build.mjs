@@ -1,89 +1,47 @@
-import { copyFile, mkdir, readdir, rename, rm, stat, writeFile, readFile } from "node:fs/promises";
+import { copyFile, mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
 const rootDir = process.cwd();
 const distDir = resolve(rootDir, "dist");
 const clientDir = resolve(distDir, "client");
 const serverDir = resolve(distDir, "server");
-const assetsDir = resolve(clientDir, "assets");
+const serverEntryPath = resolve(serverDir, "index.js");
 const redirectsSourcePath = resolve(rootDir, "public", "_redirects");
 const redirectsTargetPath = resolve(distDir, "_redirects");
-const rootRoutePath = resolve(rootDir, "src", "routes", "__root.tsx");
 
-async function exists(path) {
-  try { await stat(path); return true; } catch { return false; }
+async function exists(p) {
+  try { await stat(p); return true; } catch { return false; }
 }
 
-function extractTitle(rootCode) {
-  const m = rootCode.match(/title:\s*["'`]([^"'`]+)["'`]/);
-  return m ? m[1] : "Site";
-}
-
-function extractMetas(rootCode) {
-  const metas = [];
-  const re = /\{\s*(?:name|property|charSet)\s*:\s*["']?([^"',}]+)["']?\s*,\s*content\s*:\s*["`]([^"`]+)["`]/g;
-  let m;
-  while ((m = re.exec(rootCode)) !== null) {
-    const [, key, value] = m;
-    if (key === "charSet" || key === "charset") continue;
-    metas.push({ key, value });
-  }
-  return metas;
-}
-
-async function buildIndexHtml() {
-  const assets = await readdir(assetsDir);
-  const sizes = await Promise.all(
-    assets.map(async (f) => ({ name: f, size: (await stat(resolve(assetsDir, f))).size }))
-  );
-
-  const entryJs = sizes
-    .filter((f) => f.name.startsWith("index-") && f.name.endsWith(".js"))
-    .sort((a, b) => b.size - a.size)[0];
-  const mainCss = sizes
-    .filter((f) => f.name.endsWith(".css"))
-    .sort((a, b) => b.size - a.size)[0];
-
-  if (!entryJs) throw new Error("Could not find entry JS in dist/client/assets");
-
-  let title = "Site";
-  let metaTags = "";
-  if (await exists(rootRoutePath)) {
-    const rootCode = await readFile(rootRoutePath, "utf8");
-    title = extractTitle(rootCode);
-    const metas = extractMetas(rootCode);
-    metaTags = metas
-      .map(({ key, value }) => {
-        const safe = value.replace(/"/g, "&quot;");
-        const attr = key.startsWith("og:") || key.startsWith("twitter:") ? "property" : "name";
-        return `<meta ${attr}="${key}" content="${safe}" />`;
-      })
-      .join("\n");
+async function prerenderRootHtml() {
+  const mod = await import(pathToFileURL(serverEntryPath).href);
+  const handler = mod.default;
+  if (!handler || typeof handler.fetch !== "function") {
+    throw new Error("dist/server/index.js does not export default.fetch — cannot prerender");
   }
 
-  const cssTag = mainCss ? `<link rel="stylesheet" href="/assets/${mainCss.name}" />` : "";
+  const request = new Request("http://localhost/");
+  const env = {};
+  const ctx = {
+    waitUntil: () => {},
+    passThroughOnException: () => {},
+  };
 
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${title}</title>
-${metaTags}
-<link rel="icon" href="/favicon.ico" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-${cssTag}
-<script type="module" crossorigin src="/assets/${entryJs.name}"></script>
-</head>
-<body>
-<div id="root"></div>
-</body>
-</html>
-`;
+  const response = await handler.fetch(request, env, ctx);
+  if (response.status !== 200) {
+    throw new Error(`Prerender returned HTTP ${response.status}`);
+  }
+
+  const html = await response.text();
+  if (!html.includes("<html")) {
+    throw new Error("Prerender output does not look like HTML");
+  }
+
+  return html;
 }
 
-async function moveClientOutputToRoot() {
+async function flattenClientToRoot() {
   const entries = await readdir(clientDir);
   for (const entry of entries) {
     const src = resolve(clientDir, entry);
@@ -105,11 +63,18 @@ async function main() {
   if (!(await exists(clientDir))) {
     throw new Error("Expected dist/client after vite build");
   }
+  if (!(await exists(serverEntryPath))) {
+    throw new Error("Expected dist/server/index.js after vite build");
+  }
 
-  const html = await buildIndexHtml();
+  console.log("[static-build] Prerendering root HTML from server bundle...");
+  const html = await prerenderRootHtml();
+  console.log(`[static-build] Got ${html.length} bytes of HTML`);
+
   await writeFile(resolve(clientDir, "index.html"), html, "utf8");
 
-  await moveClientOutputToRoot();
+  console.log("[static-build] Flattening dist/client/* → dist/");
+  await flattenClientToRoot();
 
   if (await exists(serverDir)) {
     await rm(serverDir, { recursive: true, force: true });
