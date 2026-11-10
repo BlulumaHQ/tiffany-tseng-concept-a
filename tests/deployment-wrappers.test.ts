@@ -10,7 +10,8 @@ function htmlResponse(): Response {
 }
 
 async function runStartMiddleware(request: Request): Promise<Response> {
-  const middleware = startInstance.getOptions().requestMiddleware?.[0];
+  const options = await startInstance.getOptions();
+  const middleware = options.requestMiddleware?.[0];
   const server = (middleware as any).options.server as (args: {
     request: Request;
     next: () => Promise<{ response: Response }>;
