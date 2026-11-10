@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyDefaultHostNoindex,
   isDefaultProjectHostname,
-} from "./indexing-policy";
+} from "../src/lib/indexing-policy";
 
 function htmlResponse(headers?: HeadersInit): Response {
   return new Response("<html></html>", {
