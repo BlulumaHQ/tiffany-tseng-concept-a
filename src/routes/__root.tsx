@@ -38,8 +38,8 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Tiffany Tseng — Vancouver Real Estate" },
       { name: "twitter:description", content: "Work with Tiffany Tseng PREC, a trusted Vancouver Realtor with 10+ years guiding buyers, sellers, and investors. Personalized service, expert marketing, real results." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a7171802-3a16-47c0-950f-6e7a6cbb2949/id-preview-add14e14--dd854523-8edf-495e-9807-687fb7164526.lovable.app-1777425715477.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a7171802-3a16-47c0-950f-6e7a6cbb2949/id-preview-add14e14--dd854523-8edf-495e-9807-687fb7164526.lovable.app-1777425715477.png" },
+      { property: "og:image", content: "/og-image.jpg" },
+      { name: "twitter:image", content: "/og-image.jpg" },
     ],
     links: [
       {
